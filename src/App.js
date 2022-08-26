@@ -27,13 +27,18 @@ function App() {
     createBoard()
   }, []);
 
-  console.log(currentColorArrangement)
-
   return (
-    <div>
-
+    <div className="app">
+      <div className="game">
+        {currentColorArrangement.map((candyColor, index) => (
+          <img
+            key={index}
+            style={{ backgroundColor: candyColor }}
+          />
+        ))}
+      </div>
     </div>
-  );
+  )
 }
 
 export default App;
