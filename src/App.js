@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ScoreBoard } from "./components/ScoreBoard";
 import BlueCandy from './images/blue-candy.png'
 import Blank from './images/blank.png'
 import GreenCandy from './images/green-candy.png'
@@ -24,13 +25,16 @@ function App() {
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null)
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null)
+  const [scoreDisplay, setScoreDisplay] = useState(0)
 
   const checkForColumnOfThree = () => {
     for (let i = 0; i <= 47; i++) {
       const columnOfThree = [i, i + width, i + width * 2];
       const decidedColor = currentColorArrangement[i];
+      const isBlank = currentColorArrangement[i] === Blank
 
-      if (columnOfThree.every(number => currentColorArrangement[number] === decidedColor)) {
+      if (columnOfThree.every(number => currentColorArrangement[number] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 3)
         columnOfThree.forEach(number => currentColorArrangement[number] = Blank)
         return true
       }
@@ -42,10 +46,13 @@ function App() {
       const rowOfThree = [i, i + 1, i + 2];
       const decidedColor = currentColorArrangement[i];
       const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
+      const isBlank = currentColorArrangement[i] === Blank
+
 
       if (notValid.includes(i)) continue
 
-      if (rowOfThree.every(number => currentColorArrangement[number] === decidedColor)) {
+      if (rowOfThree.every(number => currentColorArrangement[number] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 3)
         rowOfThree.forEach(number => currentColorArrangement[number] = Blank)
         return true
       }
@@ -57,8 +64,11 @@ function App() {
     for (let i = 0; i <= 39; i++) {
       const columnOfFour = [i, i + width, i + width * 2, i + width * 3];
       const decidedColor = currentColorArrangement[i];
+      const isBlank = currentColorArrangement[i] === Blank
 
-      if (columnOfFour.every(number => currentColorArrangement[number] === decidedColor)) {
+
+      if (columnOfFour.every(number => currentColorArrangement[number] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 4)
         columnOfFour.forEach(number => currentColorArrangement[number] = Blank)
         return true
 
@@ -71,10 +81,12 @@ function App() {
       const rowOfFour = [i, i + 1, i + 2, i + 3];
       const decidedColor = currentColorArrangement[i];
       const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64]
+      const isBlank = currentColorArrangement[i] === Blank
 
       if (notValid.includes(i)) continue
 
-      if (rowOfFour.every(number => currentColorArrangement[number] === decidedColor)) {
+      if (rowOfFour.every(number => currentColorArrangement[number] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 4)
         rowOfFour.forEach(number => currentColorArrangement[number] = Blank)
         return true
 
@@ -107,7 +119,7 @@ function App() {
     setSquareBeingReplaced(e.target)
   }
 
-  const dragEnd = (e) => {
+  const dragEnd = () => {
     const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data-id'))
     const squareBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data-id'))
 
@@ -189,6 +201,7 @@ function App() {
           />
         ))}
       </div>
+      <ScoreBoard score={scoreDisplay} />
     </div>
   )
 }
