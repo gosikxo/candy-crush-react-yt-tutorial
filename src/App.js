@@ -64,6 +64,16 @@ function App() {
     }
   }
 
+  const moveIntoSquareBelow = () => {
+    for(let i = 0; i < 64-width; i++) {
+
+      if((currentColorArrangement[i + width]) === '') {
+        currentColorArrangement[i+width] = currentColorArrangement[i]
+        currentColorArrangement[i] = ''
+      }
+    }
+  }
+
 
   const createBoard = () => {
     const randomColorArrangement = [];
@@ -86,10 +96,11 @@ function App() {
       checkForRowOfFour();
       checkForColumnOfThree();
       checkForRowOfThree();
+      moveIntoSquareBelow();
       setCurrentColorArrangement([...currentColorArrangement])
-    }, 100)
+    }, 1000)
     return () => clearInterval(timer)
-  }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, currentColorArrangement])
+  }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
   return (
     <div className="app">
