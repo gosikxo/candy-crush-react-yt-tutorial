@@ -24,6 +24,17 @@ function App() {
     }
   }
 
+  const checkForColumnOfFour = () => {
+    for(let i = 0; i< 39; i++) {
+      const columnOfFour =  [i, i + width, i + width * 2, i + width * 3];
+      const decidedColor = currentColorArrangement[i];
+
+      if(columnOfFour.every(number => currentColorArrangement[number] === decidedColor)) {
+        columnOfFour.forEach(number => currentColorArrangement[number] = '' )
+      }
+    }
+  }
+
   const createBoard = () => {
     const randomColorArrangement = [];
     for (let i = 0; i < 64; i++) {
@@ -41,11 +52,12 @@ function App() {
 
   useEffect(() => {
     const timer = setInterval(() => {
+      checkForColumnOfFour();
       checkForColumnOfThree();
       setCurrentColorArrangement([...currentColorArrangement])
     }, 100)
     return () => clearInterval(timer)
-  }, [checkForColumnOfThree, currentColorArrangement])
+  }, [checkForColumnOfFour, checkForColumnOfThree, currentColorArrangement])
 
   return (
     <div className="app">
